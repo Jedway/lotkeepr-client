@@ -5,7 +5,7 @@ import heroImage from "@/assets/hero-image.jpg"
 import placeholderImage from "@/assets/placeholder.svg"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-import { UserCircle, Shield, Zap, Search, ChevronDown, Heart, MapPin, Eye, Menu, Star, Grid, Image, Video, Calendar, Phone, Mail, Instagram, Twitter, Linkedin, Github, Building2, Home, Users, User, UserPlus } from "lucide-react"
+import { UserCircle, Shield, Zap, Search, ChevronDown, Heart, MapPin, Eye, Star, Grid, Image, Video, Calendar, Phone, Mail, Instagram, Twitter, Linkedin, Github } from "lucide-react"
 import {
   Carousel,
   CarouselContent,
