@@ -10,11 +10,6 @@ interface DashboardLayoutProps {
   currentView?: string
 }
 
-interface SidebarContextProps {
-  isCollapsed: boolean
-  setIsCollapsed: (value: boolean) => void
-}
-
 function DashboardContent({
   children,
   pageTitle,

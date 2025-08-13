@@ -3,6 +3,7 @@ import { DashboardLayout } from "@/components/layouts/DashboardLayout"
 import type { Row } from "@tanstack/react-table"
 import * as RechartsPrimitive from "recharts"
 import type { TooltipProps } from "recharts"
+import type { ChartTooltipContentProps } from "@/components/ui/chart"
 import {
   Table,
   TableBody,
@@ -14,6 +15,7 @@ import {
 import {
   ChartContainer,
   ChartTooltipContent,
+  ChartLegend,
 } from "@/components/ui/chart"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -133,7 +135,11 @@ const StatItem = ({
   </div>
 )
 
-const DashboardView = () => (
+interface DashboardViewProps {
+  setCurrentView: (view: string) => void;
+}
+
+const DashboardView = ({ setCurrentView }: DashboardViewProps) => (
   <div className="grid gap-6">
     <h2 className="text-2xl font-bold tracking-tight">Dashboard Overview</h2>
     
@@ -1261,7 +1267,7 @@ export default function OwnerDash() {
   const getViewComponent = () => {
     switch (currentView) {
       case "dashboard":
-        return <DashboardView />
+        return <DashboardView setCurrentView={setCurrentView} />
       case "properties":
         return <PropertiesView />
       case "rent-roll":
@@ -1277,7 +1283,7 @@ export default function OwnerDash() {
       case "team":
         return <TeamView />
       default:
-        return <DashboardView />
+        return <DashboardView setCurrentView={setCurrentView} />
     }
   }
 
