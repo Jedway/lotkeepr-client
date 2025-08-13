@@ -1,13 +1,18 @@
 import * as React from "react"
 import { AppSidebar } from "@/components/app-sidebar"
 import { SiteHeader } from "@/components/site-header"
-import { SidebarProvider, useSidebar } from "@/components/ui/sidebar"
+import { SidebarProvider } from "@/components/ui/sidebar"
 
 interface DashboardLayoutProps {
   children: React.ReactNode
   pageTitle?: string
   onNavigate?: (path: string) => void
   currentView?: string
+}
+
+interface SidebarContextProps {
+  isCollapsed: boolean
+  setIsCollapsed: (value: boolean) => void
 }
 
 function DashboardContent({
@@ -17,8 +22,6 @@ function DashboardContent({
   children: React.ReactNode
   pageTitle?: string
 }) {
-  const { isCollapsed } = useSidebar()
-
   return (
     <div className="flex flex-col">
       <SiteHeader title={pageTitle} />

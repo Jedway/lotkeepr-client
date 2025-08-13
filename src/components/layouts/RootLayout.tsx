@@ -21,7 +21,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { ThemeProvider } from "@/components/theme-provider"
-import { Building2, Home, Users, User, UserPlus, Menu } from "lucide-react"
+import { Building2, Home, Users, User, Menu } from "lucide-react"
 import { NavigationMenuLink } from '@radix-ui/react-navigation-menu'
 
 const RootLayout = () => {

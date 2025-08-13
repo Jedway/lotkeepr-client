@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import { DashboardLayout } from "@/components/layouts/DashboardLayout"
 import type { Row } from "@tanstack/react-table"
 import * as RechartsPrimitive from "recharts"
+import type { TooltipProps } from "recharts"
 import {
   Table,
   TableBody,
@@ -12,10 +13,7 @@ import {
 } from "@/components/ui/table"
 import {
   ChartContainer,
-  ChartTooltip,
   ChartTooltipContent,
-  ChartLegend,
-  ChartLegendContent,
 } from "@/components/ui/chart"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -758,7 +756,7 @@ const rentRollData: RentRollEntry[] = [
 ]
 
 const RentRollView = () => {
-  const [date, setDate] = React.useState<Date | undefined>(new Date())
+  const currentDate = new Date()
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
@@ -853,7 +851,7 @@ const RentRollView = () => {
     const encodedUri = encodeURI(csvContent)
     const link = document.createElement("a")
     link.setAttribute("href", encodedUri)
-    link.setAttribute("download", `rent_roll_${date?.toISOString().split("T")[0]}.csv`)
+    link.setAttribute("download", `rent_roll_${currentDate.toISOString().split("T")[0]}.csv`)
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)
@@ -1152,7 +1150,7 @@ const ReportsView = () => {
                       domain={[0, 100]}
                       tick={{ fontSize: 12 }}
                     />
-                    <RechartsPrimitive.Tooltip content={(props) => (
+                    <RechartsPrimitive.Tooltip content={(props: TooltipProps<number, string>) => (
                       <ChartTooltipContent
                         {...props}
                         formatter={(value) => `${value}%`}
@@ -1258,7 +1256,7 @@ const TeamView = () => (
 )
 
 export default function OwnerDash() {
-  const [currentView, setCurrentView] = useState("dashboard")
+  const [currentView, setCurrentView] = useState<string>("dashboard")
   
   const getViewComponent = () => {
     switch (currentView) {
