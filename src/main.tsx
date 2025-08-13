@@ -3,10 +3,14 @@ import { createRoot } from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './index.css'
 import App from './App.tsx'
+import ManagerDash from './app/ManagerDash.tsx'
+import OwnerDash from './app/OwnerDash.tsx'
+import TenantDash from './app/TenantDash.tsx'
 import Donate from './Donate.tsx'
 import RootLayout from './components/layouts/RootLayout.tsx'
 
 const router = createBrowserRouter([
+  // All routes that use RootLayout (public routes)
   {
     path: "/",
     element: <RootLayout />,
@@ -20,6 +24,20 @@ const router = createBrowserRouter([
         element: <Donate />,
       },
     ],
+  },
+  
+  // Dashboard routes
+  {
+    path: "/manager",
+    element: <ManagerDash />,
+  },
+  {
+    path: "/owner",
+    element: <OwnerDash />,
+  },
+  {
+    path: "/tenant",
+    element: <TenantDash />,
   },
 ])
 

@@ -28,6 +28,7 @@ const RootLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
   const [showLoginDialog, setShowLoginDialog] = React.useState(false);
   const [showGetStartedDialog, setShowGetStartedDialog] = React.useState(false);
+  const [selectedRole, setSelectedRole] = React.useState<string>("owner");
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -37,6 +38,20 @@ const RootLayout = () => {
 
   const handleGetStartedClick = () => {
     setShowGetStartedDialog(true);
+  };
+
+  const handleRoleSelection = (role: string) => {
+    setSelectedRole(role);
+  };
+
+  const handleLoginSubmit = () => {
+    setShowLoginDialog(false);
+    navigate(`/${selectedRole}`);
+  };
+
+  const handleGetStartedSubmit = () => {
+    setShowGetStartedDialog(false);
+    navigate(`/${selectedRole}`);
   };
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, targetId: string) => {
@@ -70,7 +85,7 @@ const RootLayout = () => {
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-6">
-            <RadioGroup defaultValue="owner" className="grid grid-cols-2 gap-4">
+            <RadioGroup defaultValue="owner" value={selectedRole} onValueChange={handleRoleSelection} className="grid grid-cols-2 gap-4">
               <div>
                 <RadioGroupItem value="owner" id="owner" className="peer sr-only" />
                 <label
@@ -103,18 +118,8 @@ const RootLayout = () => {
                   <div className="text-sm font-medium">Tenant</div>
                 </label>
               </div>
-
-              <div>
-                <RadioGroupItem value="guest" id="guest" className="peer sr-only" />
-                <label
-                  htmlFor="guest"
-                  className="flex flex-col items-center justify-center rounded-lg border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor-pointer"
-                >
-                  <UserPlus className="mb-2 h-6 w-6" />
-                  <div className="text-sm font-medium">Guest</div>
-                </label>
-              </div>
             </RadioGroup>
+            <Button onClick={handleLoginSubmit} className="w-full">Continue</Button>
 
             <div className="space-y-4">
               <div className="space-y-2">
@@ -137,7 +142,7 @@ const RootLayout = () => {
                   placeholder="Enter your password"
                 />
               </div>
-              <Button className="w-full">
+              <Button className="w-full" onClick={handleLoginSubmit}>
                 Login
               </Button>
             </div>
@@ -154,12 +159,11 @@ const RootLayout = () => {
               Create your account to begin managing properties
             </DialogDescription>
           </DialogHeader>
-          <Tabs defaultValue="owner" className="w-full">
-            <TabsList className="grid w-full grid-cols-4">
+          <Tabs defaultValue="owner" value={selectedRole} onValueChange={handleRoleSelection} className="w-full">
+            <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="owner">Owner</TabsTrigger>
               <TabsTrigger value="manager">Manager</TabsTrigger>
               <TabsTrigger value="tenant">Tenant</TabsTrigger>
-              <TabsTrigger value="guest">Guest</TabsTrigger>
             </TabsList>
             {['owner', 'manager', 'tenant', 'guest'].map((role) => (
               <TabsContent key={role} value={role} className="space-y-4 mt-4">
@@ -203,8 +207,8 @@ const RootLayout = () => {
                       placeholder="Confirm your password"
                     />
                   </div>
-                  <Button className="w-full mt-6">
-                    Create {role.charAt(0).toUpperCase() + role.slice(1)} Account
+                  <Button className="w-full mt-6" onClick={handleGetStartedSubmit}>
+                    Create Account
                   </Button>
                 </div>
               </TabsContent>
@@ -312,7 +316,7 @@ const RootLayout = () => {
       </Sheet>
 
       <main>
-        <Outlet />
+        <Outlet context={{ handleLoginClick, handleGetStartedClick }} />
       </main>
 
       {/* Footer */}

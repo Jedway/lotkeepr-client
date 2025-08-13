@@ -1,4 +1,5 @@
 import { motion } from "framer-motion"
+import { useOutletContext } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import heroImage from "@/assets/hero-image.jpg"
@@ -24,7 +25,13 @@ import {
 import { Slider } from "@/components/ui/slider"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 
+interface OutletContextType {
+  handleLoginClick: () => void;
+  handleGetStartedClick: () => void;
+}
+
 function App() {
+  const { handleLoginClick, handleGetStartedClick } = useOutletContext<OutletContextType>();
 
   return (
     <>
@@ -72,13 +79,14 @@ function App() {
               <Button size="lg" variant="default">
                 Find a property
               </Button>
-              <Button size="lg" variant="outline" className="bg-white/10 backdrop-blur-sm">
+              <Button size="lg" variant="outline" className="bg-white/10 backdrop-blur-sm" onClick={handleLoginClick}>
                 Login
               </Button>
               <Button 
                 size="lg" 
                 variant="secondary" 
                 className="bg-white text-black hover:bg-white/90"
+                onClick={handleGetStartedClick}
               >
                 Get Started
               </Button>
