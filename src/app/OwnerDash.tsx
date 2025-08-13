@@ -2,8 +2,6 @@ import React, { useState } from "react"
 import { DashboardLayout } from "@/components/layouts/DashboardLayout"
 import type { Row } from "@tanstack/react-table"
 import * as RechartsPrimitive from "recharts"
-import type { TooltipProps } from "recharts"
-import type { ChartTooltipContentProps } from "@/components/ui/chart"
 import {
   Table,
   TableBody,
@@ -16,6 +14,7 @@ import {
   ChartContainer,
   ChartTooltipContent,
   ChartLegend,
+  ChartTooltip,
 } from "@/components/ui/chart"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -57,6 +56,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { cn } from "@/lib/utils"
 import { Calendar28 } from "@/components/ui/date-picker"
+import { Calendar } from "@/components/ui/calendar"
 import {
   Card,
   CardContent,
@@ -99,6 +99,7 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs"
+import type { DateRange } from "react-day-picker"
 
 // Placeholder components for each section
 import {
@@ -1073,12 +1074,9 @@ const revenueData = [
 ]
 
 const ReportsView = () => {
-  const [dateRange, setDateRange] = useState<{
-    from: Date | undefined
-    to: Date | undefined
-  }>({
+  const [dateRange, setDateRange] = useState<DateRange | undefined>({
     from: new Date(2025, 0, 1), // January 1, 2025
-    to: new Date() // Current date
+    to: new Date(), // Current date
   })
 
   const handleDownloadPDF = () => {
@@ -1115,12 +1113,12 @@ const ReportsView = () => {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <h2 className="text-2xl font-bold tracking-tight">Reports</h2>
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-          <Calendar28
+          <Calendar
             initialFocus
             mode="range"
-            defaultMonth={dateRange.from}
-            selected={{ from: dateRange.from, to: dateRange.to }}
-            onSelect={(range) => setDateRange(range || { from: undefined, to: undefined })}
+            defaultMonth={dateRange?.from}
+            selected={dateRange}
+            onSelect={setDateRange}
             numberOfMonths={1}
             className="w-full sm:w-auto"
           />
@@ -1156,12 +1154,9 @@ const ReportsView = () => {
                       domain={[0, 100]}
                       tick={{ fontSize: 12 }}
                     />
-                    <RechartsPrimitive.Tooltip content={(props: TooltipProps<number, string>) => (
-                      <ChartTooltipContent
-                        {...props}
-                        formatter={(value) => `${value}%`}
-                      />
-                    )} />
+                    <ChartTooltip 
+                      content={<ChartTooltipContent formatter={(value: unknown) => `${Number(value)}%`} />}
+                    />
                     <RechartsPrimitive.Area
                       type="monotone"
                       dataKey="occupancy"
@@ -1200,17 +1195,9 @@ const ReportsView = () => {
                       tickFormatter={(value) => `₦${(value / 1000000).toFixed(1)}M`}
                       tick={{ fontSize: 12 }}
                     />
-                    <RechartsPrimitive.Tooltip content={(props) => (
-                      <ChartTooltipContent
-                        {...props}
-                        formatter={(value) => 
-                          new Intl.NumberFormat("en-NG", {
-                            style: "currency",
-                            currency: "NGN"
-                          }).format(value as number)
-                        }
-                      />
-                    )} />
+                    <ChartTooltip 
+                      content={<ChartTooltipContent formatter={(value: unknown) => new Intl.NumberFormat("en-NG", { style: "currency", currency: "NGN" }).format(Number(value))} />}
+                    />
                     <RechartsPrimitive.Bar
                       dataKey="revenue"
                       name="revenue"
